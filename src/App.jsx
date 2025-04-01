@@ -90,11 +90,29 @@ function App() {
         padding: "1.5rem",
         borderRadius: "1rem",
         width: "100%", maxWidth: "500px",
-        boxShadow: "0 0 20px rgba(0,0,0,0.3)"
+        boxShadow: "0 0 20px rgba(0,0,0,0.3)",
+        marginBottom: "1rem"
       }}>
         <h1 style={{ textAlign: "center", fontSize: "1.5rem", marginBottom: "1rem" }}>
           Steam Support Simulator
         </h1>
+
+        {/* Account Summary Panel */}
+        <div style={{
+          backgroundColor: "#1b2838",
+          padding: "1rem",
+          borderRadius: "0.5rem",
+          marginBottom: "1rem",
+          fontSize: "0.9rem",
+          lineHeight: 1.6
+        }}>
+          <p><strong>Account:</strong> sunnydiego</p>
+          <p><strong>Years on Steam:</strong> 10</p>
+          <p><strong>VAC Bans:</strong> 0</p>
+          <p><strong>Community Bans:</strong> 1</p>
+          <p><strong>Support Tickets Ignored:</strong> 183</p>
+        </div>
+
         <div style={{ marginBottom: "1rem", whiteSpace: "pre-wrap", maxHeight: "400px", overflowY: "auto" }}>
           {messages.map((msg, i) => (
             <p key={i} style={{ backgroundColor: "#1b2838", padding: "0.5rem", borderRadius: "0.5rem", marginBottom: "0.5rem" }}>
@@ -102,6 +120,7 @@ function App() {
             </p>
           ))}
         </div>
+
         <button onClick={handleClick} disabled={loading || buttonLoading} style={{
           width: "100%",
           padding: "0.75rem",
