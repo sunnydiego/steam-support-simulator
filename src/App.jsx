@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
 
+const supportMessages = [
+  "I don’t have the intention of bothering anyone, but I can’t get real help. On help.steampowered.com I only receive automated replies. I’ve done nothing wrong, yet my accounts were banned. Please help me.",
+  "I’ve spent 10 years on Steam and never broken any rules. I opened new accounts to protect my CS skins from scams — not for commercial use. But I was banned for something I didn’t do. That’s all I ask: to be heard.",
+  "I’ve never sold skins for money, never worked with gambling sites, and never violated the agreement. I’m being falsely labeled. Just because 99% might be guilty doesn’t mean I am.",
+  "I feel like I’ve lost everything. My accounts, my work, my identity. I was banned without doing anything wrong. Please don’t ignore this like another ticket.",
+  "All I want is fairness. I’m innocent. Yet every message I get is automated. Can someone — anyone — look at my case with human eyes? That’s all I ask."
+];
+
 const responses = [
   "Sorry, we cannot help you.",
   "This action violates a guideline we won't specify.",
@@ -57,6 +65,7 @@ function App() {
       const newClickCount = clickCount + 1;
       setClickCount(newClickCount);
 
+      const userText = supportMessages[Math.floor(Math.random() * supportMessages.length)];
       const response =
         newClickCount === 10
           ? "You have reached maximum support attempts. Please reinstall life."
@@ -66,7 +75,7 @@ function App() {
 
       setMessages(prev => [
         ...prev,
-        { from: "user", text: "Hi, can I get some help?" },
+        { from: "user", text: userText },
         { from: "support", text: reply }
       ]);
 
@@ -81,10 +90,11 @@ function App() {
 
   const renderMessage = (msg, i) => {
     const baseStyle = {
-      padding: "0.5rem",
-      borderRadius: "0.5rem",
+      padding: "0.75rem",
+      borderRadius: "0.75rem",
       marginBottom: "0.5rem",
-      maxWidth: "80%"
+      maxWidth: "80%",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
     };
     let style = {};
     if (msg.from === "user") {
@@ -100,7 +110,7 @@ function App() {
   return (
     <div style={{
       minHeight: "100vh",
-      backgroundColor: "#1b2838",
+      background: "linear-gradient(to bottom right, #1b2838, #121a24)",
       color: "#c7d5e0",
       display: "flex",
       justifyContent: "center",
@@ -108,6 +118,20 @@ function App() {
       padding: "2rem",
       flexDirection: "column"
     }}>
+      <header style={{
+        backgroundColor: "#2a475e",
+        width: "100%",
+        padding: "1rem",
+        textAlign: "center",
+        fontSize: "1.5rem",
+        fontWeight: "bold",
+        color: "#ffffff",
+        marginBottom: "1rem",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.3)"
+      }}>
+        Steam Support Simulator
+      </header>
+
       <div style={{
         backgroundColor: "#2a475e",
         padding: "1.5rem",
@@ -118,10 +142,6 @@ function App() {
         display: "flex",
         flexDirection: "column"
       }}>
-        <h1 style={{ textAlign: "center", fontSize: "1.5rem", marginBottom: "1rem" }}>
-          Steam Support Simulator
-        </h1>
-
         {/* Account Summary Panel */}
         <div style={{
           backgroundColor: "#1b2838",
