@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const supportMessages = [
   "I don’t have the intention of bothering anyone, but I can’t get real help. On help.steampowered.com I only receive automated replies. I’ve done nothing wrong, yet my accounts were banned. Please help me.",
   "I’ve spent 10 years on Steam and never broken any rules. I opened new accounts to protect my CS skins from scams — not for commercial use. But I was banned for something I didn’t do. That’s all I ask: to be heard.",
-  "I’ve never sold skins for money, never worked with gambling sites, and never violated the agreement. I’m being falsely labeled. Just because 99% might be guilty doesn’t mean I am.",
+  "I never played gamble or supplied gamble sites, and never violated the agreement. I’m being falsely labeled. Just because 99% might be guilty doesn’t mean I am.",
   "I feel like I’ve lost everything. My accounts, my work, my identity. I was banned without doing anything wrong. Please don’t ignore this like another ticket.",
   "All I want is fairness. I’m innocent. Yet every message I get is automated. Can someone — anyone — look at my case with human eyes? That’s all I ask."
 ];
