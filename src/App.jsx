@@ -29,9 +29,9 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setMessages([
-        "Connecting to Steam Support...",
-        "Loading auto-response engine...",
-        "Connection established. You are now ignored."
+        { from: "system", text: "Connecting to Steam Support..." },
+        { from: "system", text: "Loading auto-response engine..." },
+        { from: "system", text: "Connection established. You are now ignored." }
       ]);
       setLoading(false);
     }, 2000);
@@ -39,7 +39,7 @@ function App() {
     const timer = setTimeout(() => {
       setMessages(prev => [
         ...prev,
-        "Looks like you've been waiting a while. We recommend launching Half-Life 3 while you wait."
+        { from: "system", text: "Looks like you've been waiting a while. We recommend launching Half-Life 3 while you wait." }
       ]);
     }, 60000);
 
@@ -49,22 +49,27 @@ function App() {
   const handleClick = () => {
     if (buttonLoading || loading) return;
     setButtonLoading(true);
+
     setTimeout(() => {
       const now = new Date();
       const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const ticket = generateTicketID();
-      let response;
       const newClickCount = clickCount + 1;
       setClickCount(newClickCount);
 
-      if (newClickCount === 10) {
-        response = "You have reached maximum support attempts. Please reinstall life.";
-      } else {
-        response = responses[Math.floor(Math.random() * responses.length)];
-      }
+      const response =
+        newClickCount === 10
+          ? "You have reached maximum support attempts. Please reinstall life."
+          : responses[Math.floor(Math.random() * responses.length)];
 
-      const message = `[${timestamp}] [Ticket #${ticket}]\n${response}`;
-      setMessages((prev) => [...prev, message]);
+      const reply = `[${timestamp}] [Ticket #${ticket}]\n${response}`;
+
+      setMessages(prev => [
+        ...prev,
+        { from: "user", text: "Hi, can I get some help?" },
+        { from: "support", text: reply }
+      ]);
+
       setButtonLoading(false);
 
       if (soundEnabled) {
@@ -72,6 +77,24 @@ function App() {
         audio.play();
       }
     }, 700);
+  };
+
+  const renderMessage = (msg, i) => {
+    const baseStyle = {
+      padding: "0.5rem",
+      borderRadius: "0.5rem",
+      marginBottom: "0.5rem",
+      maxWidth: "80%"
+    };
+    let style = {};
+    if (msg.from === "user") {
+      style = { ...baseStyle, backgroundColor: "#66c0f4", color: "#1b2838", alignSelf: "flex-end" };
+    } else if (msg.from === "support") {
+      style = { ...baseStyle, backgroundColor: "#1b2838", color: "#c7d5e0", alignSelf: "flex-start" };
+    } else {
+      style = { ...baseStyle, backgroundColor: "#374151", color: "#c7d5e0", alignSelf: "center", textAlign: "center" };
+    }
+    return <p key={i} style={style}>{msg.text}</p>;
   };
 
   return (
@@ -91,7 +114,9 @@ function App() {
         borderRadius: "1rem",
         width: "100%", maxWidth: "500px",
         boxShadow: "0 0 20px rgba(0,0,0,0.3)",
-        marginBottom: "1rem"
+        marginBottom: "1rem",
+        display: "flex",
+        flexDirection: "column"
       }}>
         <h1 style={{ textAlign: "center", fontSize: "1.5rem", marginBottom: "1rem" }}>
           Steam Support Simulator
@@ -106,19 +131,24 @@ function App() {
           fontSize: "0.9rem",
           lineHeight: 1.6
         }}>
-          <p><strong>Account:</strong> sunnydiego</p>
+          <p><strong>Account:</strong> <a href="https://steamcommunity.com/id/sunnydieg0/" target="_blank" rel="noopener noreferrer" style={{ color: "#66c0f4" }}>https://steamcommunity.com/id/sunnydieg0/</a></p>
           <p><strong>Years on Steam:</strong> 10</p>
           <p><strong>VAC Bans:</strong> 0</p>
           <p><strong>Community Bans:</strong> 1</p>
           <p><strong>Support Tickets Ignored:</strong> 183</p>
         </div>
 
-        <div style={{ marginBottom: "1rem", whiteSpace: "pre-wrap", maxHeight: "400px", overflowY: "auto" }}>
-          {messages.map((msg, i) => (
-            <p key={i} style={{ backgroundColor: "#1b2838", padding: "0.5rem", borderRadius: "0.5rem", marginBottom: "0.5rem" }}>
-              {msg}
-            </p>
-          ))}
+        {/* Chat */}
+        <div style={{
+          marginBottom: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+          whiteSpace: "pre-wrap",
+          maxHeight: "400px",
+          overflowY: "auto"
+        }}>
+          {messages.map((msg, i) => renderMessage(msg, i))}
         </div>
 
         <button onClick={handleClick} disabled={loading || buttonLoading} style={{
@@ -133,7 +163,7 @@ function App() {
           cursor: loading || buttonLoading ? "not-allowed" : "pointer",
           transition: "background-color 0.3s"
         }}>
-          {loading ? "Please wait..." : buttonLoading ? "Loading..." : "Get Support Response"}
+          {loading ? "Please wait..." : buttonLoading ? "Loading..." : "Send Message"}
         </button>
       </div>
     </div>
